@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const {loginSchema} = require('../../validations/authSchema/loginSchema');
-
+const pool = require('../../db/db')
 
 function validateLogin(req, res, next) {
     const resp = loginSchema.safeParse(req.body);
@@ -18,7 +18,7 @@ function validateLogin(req, res, next) {
 async function checkLoginCredentials(req, res, next) {
 
     try {
-        const [rows] = await pool.execute('SELECT * FROM users WHERE EMAIL = ?', [req.body.email]);
+        const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [req.body.email]);
 
         if (rows.length === 0) {
             return res.status(401).json({msg : "Invalid Login Credentials"});
@@ -33,7 +33,7 @@ async function checkLoginCredentials(req, res, next) {
         return res.status(401).json({
             msg : "Invalid Login Credentials"
         })
-        
+
         }
 
         // Attach the user to the req object
