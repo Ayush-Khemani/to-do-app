@@ -1,0 +1,135 @@
+{
+  "info": {
+    "name": "ToDo App - Apollo Green",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-1234567890ef",
+    "description": "Postman collection for testing ToDo App (register, login, projects, tasks) with JWT auth.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Test User\",\n    \"email\": \"testuser@example.com\",\n    \"password\": \"Password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/registeration",
+          "host": ["{{base_url}}"],
+          "path": ["users","register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"Password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": ["{{base_url}}"],
+          "path": ["users","login"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Save JWT token to environment variable",
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"token\", jsonData.token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"My First Project\",\n    \"description\": \"This is a test project.\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/project/createProject",
+          "host": ["{{base_url}}"],
+          "path": ["projects"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Projects",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/project/getProjects",
+          "host": ["{{base_url}}"],
+          "path": ["projects"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"project_id\": 1,\n    \"title\": \"My First Task\",\n    \"description\": \"This is a test task.\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/tasks/createTask",
+          "host": ["{{base_url}}"],
+          "path": ["tasks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Tasks for Project",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{base_url}}/tasks/1",
+          "host": ["{{base_url}}"],
+          "path": ["tasks","1"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" }
+  ]
+}

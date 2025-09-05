@@ -37,6 +37,7 @@ async function registerUser(req, res) {
 
     // Store the data in the database:
     try {
+        
         const resp = await pool.execute('Insert into users (name, email, password) values (?, ?, ?)', [data.name, data.email, hashedPassword]);
         res.status(201).json({msg : "User Sucessfully created"});
 
