@@ -1,4 +1,4 @@
-# ToDo App - Apollo Green Solutions
+# ToDo App 
 
 This is a backend API for a ToDo app. Users can register, login, create projects, and add tasks to projects. Authentication is done using JWT.
 
